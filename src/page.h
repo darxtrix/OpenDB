@@ -4,6 +4,7 @@
 /*
 	Abstraction of a slotted page block.
 	Manages adding, deletion and searching of records in the page itself.
+	Keeps a <undecided> list of records in a page.
 */
 
 #endif /* end PAGES_H */

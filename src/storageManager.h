@@ -3,7 +3,7 @@
 
 /*
 	Abstraction class for the Storage Manager.
-	An universal Storage Manger instance will do allocation/deallocation of pages and records 
-	on the disk.
+	An universal Storage Manger instance will do storage management using buffer manager and
+	Disk Mananager.
 */
 #endif /* end STORAGEMANAGER_H */
