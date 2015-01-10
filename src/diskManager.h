@@ -3,8 +3,8 @@
 
 /* 
 	Abstraction class for representation of the Disk Manager.
-	A Disk manager instance will do all the operations on the disk.
-	The Disk manager will have a universal instance only.
+	A Disk Manager instance will do all the allocation/deallocation of the disk.
+	The Disk Manager will have a universal instance only.
 */
 
 #endif /* end DISKMANAGER_H */
