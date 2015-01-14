@@ -7,4 +7,10 @@
 	file operations.
 	Manages the allocation of pages in the file.
 */
+
+class DBFile
+{
+public:
+};
+
 #endif /* end DBFILE_H */
