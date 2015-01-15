@@ -49,13 +49,14 @@ private:
 	static int deleteRecord(Record* rec);
 
 	// write the binary information of the page to the bits array
+	// bits must be of PAGE_SIZE
 	static void toBinary(char* bits);
 
 	// read the page from the bits array 
 	static int fromBinary(char* bits);
 
 	// get the number of records
-	static int numRecords();
+	static int getNumRecs();
 
 	// returns the blockId of next page
 	static int getNextPage();
@@ -64,11 +65,11 @@ private:
 	static int getPrevPage();
 
 	// empty the page
-	static int emptyIt();
+	static void emptyIt();
 
 	/* Destructor */
 	~Page();
 
 };
 
-#endif /* end PAGES_H */
+#endif /* end PAGE_H */

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
 #include "page.h"
 #include "globals.h"
 #include "utils/page_utils.h"
@@ -39,12 +40,12 @@ int Page::insertRecord(Record* rec)
 		writeBytes(this.block,(short)(this.freespace-recLength),bits);
 
 		// updating the slot array
-		this.slots_arr[num_recs].record_offset = this.freespace-recLength;
-		this.slots_arr[num_recs].record_length = recLength;
+		this.slots_arr[slotNum].record_offset = this.freespace-recLength;
+		this.slots_arr[slotNum].record_length = recLength;
 
 		// writing the memory
-		writeShort(block,4*(this.num_recs+1),this.freespace-recLength);
-		writeShort(block,4*(this,num_recs+1)+2,this.recLength);
+		writeShort(block,4*(this.slotNum+1),this.freespace-recLength);
+		writeShort(block,4*(this,slotNum+1)+2,this.recLength);
 
 		this.num_recs++; // inrementing the number of records
 		this.freespace = this.freespace-recLength; // updating the freespace pointer
@@ -52,10 +53,15 @@ int Page::insertRecord(Record* rec)
 		// updating the headers
 		writeShort(block,(short)0,this.num_recs);
 		writeShort(block,(short)2,this.freespace);
+
+		// reallocating the underlying slots_arra
+		this.slots_arr = (slot*)realloc(sizeof(slot)*2);
+
 		return DONE;
 	}
 	else
 	{
+		cout << "Need to create a new page, insufficient storage." << endl;
 		return NOT_DONE;
 	}
 }
@@ -148,7 +154,41 @@ int Page::deleteRecord(Record* rec)
 	}	
 }
 
+void toBinary(char* bits);
+{
+	writeBytes(bits,this.block,PAGE_SIZE);
+}
 
+void fromBinary(char* bits)
+{
+	// does not do any checking of length of bits array
+	writeBytes(this.block,bits,PAGE_SIZE);
+}
+
+int getNumRecs()
+{
+	return this.num_recs;
+}
+
+int getNextPage()
+{
+	return this.next;
+}
+
+int getPrevPage()
+{
+	return this.pre;
+}
+
+int emptyIt()
+{
+	memset(this.block,0,PAGE_SIZE);
+}
+
+~Page()
+{
+	delete this;
+}
 
 
 
