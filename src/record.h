@@ -6,10 +6,11 @@
 	Manages creating of records with given field values/attributes, modification of records etc.
 */
 
-/* Basic record data structure
+/* Basic record data structure ??
 * 1) short(Attribute Type) of the first attribute in the record
 * 2) short(Attribute Length) of the former block
 */
+
 struct recAttribute
 {
 	short attType; // type of the attribute

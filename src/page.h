@@ -21,13 +21,14 @@ class SlottedPage
 public:
 	PageId blockId; // pages get pageId in their allocation order, not persistent quantity
 
-	/* These quatities are persistent on the block */
+	/* These quatities are persistent on the memory block */
 	PageId pre; // previous page's block id
 	PageId next; // next page's block id
-	char* block; // bits representation of the underlying memory
 	short num_recs; // number of records currently in the page
 	short freespace; // freespace in the page
 	slot* slots_arr; // pointer to the slots_array
+
+	char* block; // bits representation of the underlying memory
 
 	/* Constructor */
 	Page();
