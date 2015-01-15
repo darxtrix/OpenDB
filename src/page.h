@@ -16,22 +16,25 @@ struct Slot
 
 typedef struct Slot slot;
 
-class SlottedPage
+/* Their block Ids will be in the order of their position on the disk*/
+
+class Page
 {
-public:
+private:
 	PageId blockId; // pages get pageId in their allocation order, not persistent quantity
 
 	/* These quatities are persistent on the memory block */
 	PageId pre; // previous page's block id
 	PageId next; // next page's block id
 	short num_recs; // number of records currently in the page
-	short freespace; // freespace in the page
-	slot* slots_arr; // pointer to the slots_array
+	short freespace; // freespace pointer in the page
+	slot* slots_arr = NULL; // pointer to the slots_array
 
+	short actual_freespace; // the actual freespace in the page
 	char* block; // bits representation of the underlying memory
 
 	/* Constructor */
-	Page();
+	Page(char* block);
 
 	// returns the bit representation of the record at the specified slot
 	static char* getRecord(short slotNum);

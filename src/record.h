@@ -27,7 +27,7 @@ public:
 	char* bits; // underlying memory of the record
 
 	// returns the bits of the record
-	static void getBits();
+	static char* getBits();
 
 	// set the underlying bits of the record from the bits array
 	static void setBits(char* bits,int length);
