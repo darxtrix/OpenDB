@@ -48,7 +48,7 @@ char* readBytes(char* block,short offset,int length)
 // Writes length bytes of data_block starting at (block+offset)
 void writeBytes(char* block,short offset,int length,int data_block)
 {
-	memcpy(block+offset,block,length);
+	memcpy(block+offset,data_block,length);
 }
 
 // moves a chunk of bytes from source offset to the destination offset

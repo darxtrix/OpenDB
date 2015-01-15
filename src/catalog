@@ -1,0 +1,17 @@
+BEGIN
+Physics
+Tables/marks.bin
+roll String
+name String
+marks Double
+position Int
+END
+
+BEGIN
+nation
+Tables/nation.bin
+n_nationkey Int
+n_name String
+n_regionkey Int
+n_comment String
+END

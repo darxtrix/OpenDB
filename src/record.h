@@ -6,10 +6,13 @@
 	Manages creating of records with given field values/attributes, modification of records etc.
 */
 
-/* Basic record data structure ??
-* 1) short(Attribute Type) of the first attribute in the record
-* 2) short(Attribute Length) of the former block
-*/
+/** Basic record data structure:
+*  First short will contain the number of attributes of the record according to schema 
+*  Maintains an array of
+*  1) short(Attribute Type) of the first attribute in the record
+*  2) short(Attribute Length) of the former block
+**/
+
 
 struct recAttribute
 {
@@ -24,7 +27,7 @@ class Record
 public:
 	short numAtts; // number of attributes in the record
 	recAttr* atts; // arr representing the records used for printing
-	char* bits; // underlying memory of the record
+	char* rec_bits; // underlying memory of the record
 
 	// returns the bits of the record
 	static char* getBits();
@@ -49,10 +52,6 @@ public:
 	records in the table
 	??
 	*/
-
-
-
-
 
 };
 

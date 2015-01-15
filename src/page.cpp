@@ -8,10 +8,10 @@
 using namespace std;
 
 
-/*
-** Storage Manager will alocate the underlying memory for the block to point out
-** on it.
-*/
+/**
+* Storage Manager will alocate the underlying memory for the block of the Page
+* Instance to point out on it.
+**/
 
 Page::Page(char* block)
 {	

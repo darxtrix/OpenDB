@@ -8,6 +8,13 @@
 #define PAGE_SIZE 131072 - LIST_HEADERS
 #define PageId int
 
+/* Data types of the fields*/
+#define INT_T 1
+#define DOUBLE_T 2
+#define STRING_T 3
+#define DATE_T 4
+
+
 enum { NOT_DONE,DONE };
 
 
