@@ -1,57 +1,61 @@
 #ifndef RECORDS_H
 #define RECORDS_H
 
+#include <vector>
+#include <tuple>
+#include "schema.h"
+
+using namespace std;
+
+
 /*
 	Abstraction class for a database record.
-	Manages creating of records with given field values/attributes, modification of records etc.
+	Manages creating of records with given field values/attributes.
 */
 
 /** Basic record data structure:
-*  First short will contain the number of attributes of the record according to schema 
-*  Maintains an array of
-*  1) short(Attribute Type) of the first attribute in the record
-*  2) short(Attribute Length) of the former block
+-> N(number of attributes) slots of size sizeof(short) with each containing offset
+   of the start of each attribute.
+-> Using this scheme we do not need to scan the whole record for finding a particular
+   attribute..
+-> Last slot will point to the end of the record.
+-> ith value of the slot array will point to the ith attribute
 **/
 
-
-struct recAttribute
-{
-	short attType; // type of the attribute
-	short attValue; // value of the attribute
-};
-
-typedef struct recAttribute recAttr;
+typedef vector< tuple<string,string> > Atts_list; // list of tuples
 
 class Record
 {
-public:
+private:
+	Atts_list myatts;
 	short numAtts; // number of attributes in the record
-	recAttr* atts; // arr representing the records used for printing
-	char* rec_bits; // underlying memory of the record
+	short* att_offset; // offset of each record at the start of the record block
 
-	// returns the bits of the record
-	static char* getBits();
+	// Constructor
+	Record();
 
-	// set the underlying bits of the record from the bits array
-	static void setBits(char* bits,int length);
+	// Pass the relation to parse the catalog for that relation
+	// Record bits are constructed in the order of fiels in catalog file
+	static int makeRecord(string rel,vector< tuple<string,string> > myatts); 
 
-	// copy the Record to the record rec
-	static int copyRecord(Record* rec);
+	// returns the value of a given field in the record
+	// used in displaying result of SQL query
+	static string getAttribute(string field_name);
 
-	// get the number of attributes in the record
-	static int numAtts();
-
-	// prints the record to stdout
+	// return the list of tuples(field_name,value)
+	static Atts_list getAttsList();
+	
+	// prints the record's attributes to the stdout
 	static int printRecord();
 
-	// need to update the record by using schema of the record
-	// should be able to add a attribute ?? but length of the attribute changes
-	// Use the delimiter way
+	// gives the bit representation of the record
+	static char* getBits();
 
-	/* system catalog should contain the information about the length and type of the 
-	records in the table
-	??
-	*/
+	// construct the record according to the schema
+	static int suckRecord(Schema* s,char* fName);
+
+	// Destructor
+	~Record();
 
 };
 
