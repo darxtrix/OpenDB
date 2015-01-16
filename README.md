@@ -1,2 +1,2 @@
 # OpenDB
-A relational database implementation aim towards educational purposes.
+A relational database implementation aimed towards educational purposes.
