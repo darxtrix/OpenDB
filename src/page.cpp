@@ -23,13 +23,13 @@ Page::Page(char* block)
 	this.actual_freespace = (short)(PAGE_SIZE-2*sizeof(short)-sizeof(slots_arr));
 	this.num_recs = 0;
 
-	writeInt(this.block,(short)0,num_recs); // the number of records in the page
-	writeInt(this.block,(short)4,freespace); // storing the PAGE_SIZE
+	writeInt(this.block,(short)0,this.num_recs); // the number of records in the page
+	writeInt(this.block,(short)4,this.freespace); // storing the PAGE_SIZE
 }
 
 int Page::insertRecord(Record* rec)
 {
-	char* bits = rec.getBits(); // getting the bits representation of the underlying memory
+	char* bits = rec->getBits(); // getting the bits representation of the underlying memory
 	short slotNum = this.num_recs;
 	short recLength = (short)length(bits);
 	short new_actual_freespace = this.actual_freespace-recLength;
@@ -123,7 +123,7 @@ int Page::deleteRecordBySlot(short slotNum)
 
 int Page::deleteRecord(Record* rec)
 {
-	char* bits = rec.getBits();
+	char* bits = rec->getBits();
 	short length = length(bits);
 	bool flag = false;
 
