@@ -37,7 +37,7 @@ private:
 	char* rec_block; // underlying memory for the Record object
 
 	// Constructor
-	Record(string rel);
+	Record(string rel,vector<string> a,vector<string> b);
 
 	// Pass the relation to parse the catalog for that relation
 	// Record bits are constructed in the order of fields in catalog file

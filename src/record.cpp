@@ -3,11 +3,10 @@
 #include "utils/page_utils.h"
 #include "globals.h"
 
-Record::Record(string rel)
+Record::Record(string rel,vector<string> a,vector<string> b):names(a),types(b)
 {
 	// catalog parsing
-	vector<string> a,b;
-	// intialisation issue ??
+
 	this->names = a;
 	this->types = b;
 
