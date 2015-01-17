@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fcntl.h> // file control options are defined in this file
+#include <fcntl.h> // file control options are defined in this->file
 #include <cstdio>
 #include <cstdlib>
 #include "file.h"
@@ -10,16 +10,16 @@ using namespace std;
 
 File::File()
 {
-	this.myfileDes = 0;
-	this.currLength = 0;
+	this->myfileDes = 0;
+	this->currLength = 0;
 }
 
 void File::createDb(char* fName)
 {
 	int mode = O_CREAT | O_RDWR | O_TRUNC; // bitwise OR of the flags
 	// It is assumed that the file does not exist before
-	int this.myfileDes = open(fName,mode,S_IRUSR+S_IWUSR); 
-	if ( this.myfileDes < 0 )
+	int this->myfileDes = open(fName,mode,S_IRUSR+S_IWUSR); 
+	if ( this->myfileDes < 0 )
 	{
 		cerr << fName << " couldn't be created." << endl;
 		exit(0);
@@ -36,8 +36,8 @@ void File::openDb(off_t blockId,char* fName)
 {
 	int mode = O_RDWR;
 	// this is assumed that the file exists
-	int this.myfileDes = open(fName,mode,S_IWUSR+S_IRUSR);
-	if ( this.myfileDes < 0 )
+	int this->myfileDes = open(fName,mode,S_IWUSR+S_IRUSR);
+	if ( this->myfileDes < 0 )
 	{
 		cerr << fName << " couldn't be opened." << endl;
 		exit(0);
@@ -48,13 +48,13 @@ void File::openDb(off_t blockId,char* fName)
 			cout << fName << " has been opened." << endl;
 		#endif
 		// update the currLength variable
-		lseek(this.myfileDes,0,SEEK_SET);
+		lseek(this->myfileDes,0,SEEK_SET);
 		// read the first(off_t) bytes of first page to get the length of the file
-		read(this.myfileDes,&this.currLength,sizeof(off_t));
+		read(this->myfileDes,&this->currLength,sizeof(off_t));
 
-		if ( blockId >= 0 ) // point to this block
+		if ( blockId >= 0 ) // point to this->block
 		{
-			lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
+			lseek(this->myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
 		}
 		else
 		{
@@ -69,19 +69,19 @@ void File::openDb(off_t blockId,char* fName)
 int File::addPage(Page* addMe,off_t blockId )
 // blockId -> 0 1 2 .. (currLength-1)
 {
-	if ( blockId > this.currLength ) // means there will be empty pages 
+	if ( blockId > this->currLength ) // means there will be empty pages 
 	{
 		// zeroing of pages till the offset of blockId has to be done
 		// need to add these extra pages to the free list of pages
 
-		int dummy = (blockId-this.currLength)*BLOCK_SIZE;
+		int dummy = (blockId-this->currLength)*BLOCK_SIZE;
 		char buff[dummy] = {0};
 
-		lseek(this.myfileDes,this.currLength*BLOCK_SIZE,SEEK_SET);
-		write(this.myfileDes,buff,dummy);
+		lseek(this->myfileDes,this->currLength*BLOCK_SIZE,SEEK_SET);
+		write(this->myfileDes,buff,dummy);
 
 		// updating the length
-		this.currLength = blockId+1;
+		this->currLength = blockId+1;
 	}
 	
 	// now, add the page
@@ -91,9 +91,9 @@ int File::addPage(Page* addMe,off_t blockId )
 	// ?? but who will write the linked list headers of the page block
 
 	// pointing the fileDescriptor to correct position
-	lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
+	lseek(this->myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
 	// writing the record
-	write(this.myfileDes,bits,BLOCK_SIZE);
+	write(this->myfileDes,bits,BLOCK_SIZE);
 
 	delete[] bits;
 
@@ -106,9 +106,9 @@ int File::addPage(Page* addMe,off_t blockId )
 
 int File::getPage(Page* getMe,off_t blockId)
 {
-	if ( blockId >= this.currLength )
+	if ( blockId >= this->currLength )
 	{
-		cerr << "whichPage:" << whichPage << " " << "currentLength: " << this.currLength << endl;
+		cerr << "whichPage:" << whichPage << " " << "currentLength: " << this->currLength << endl;
 		cerr << "Tried accessing out of the file" << endl;
 		exit(1);
 	}
@@ -116,8 +116,8 @@ int File::getPage(Page* getMe,off_t blockId)
 	{
 		char* bits = new char[BLOCK_SIZE];
 		// moving the pointer
-		lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
-		read(this.myfileDes,bits,BLOCK_SIZE);
+		lseek(this->myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
+		read(this->myfileDes,bits,BLOCK_SIZE);
 
 		getMe->fromBinary(bits+4);
 		// update the pre and next headers of the getMe page ??
@@ -129,17 +129,17 @@ int File::getPage(Page* getMe,off_t blockId)
 
 off_t File::getLength()
 {
-	return this.currLength;
+	return this->currLength;
 }
 
 off_t File::close()
 {
-	lseek(this.myfileDes,0,SEEK_SET);
-	write(this.myfileDes,&this.currLength,sizeof(off_t)); // updating header page
-	close(this.myfileDes);
+	lseek(this->myfileDes,0,SEEK_SET);
+	write(this->myfileDes,&this->currLength,sizeof(off_t)); // updating header page
+	close(this->myfileDes);
 	#ifdef VERBOSE
 		cerr << "Closing the file." << endl;
 	#endif
 		
-	return this.currLength;
+	return this->currLength;
 }

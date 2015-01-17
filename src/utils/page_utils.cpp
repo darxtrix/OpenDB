@@ -36,6 +36,22 @@ void writeInt(char* block,short offset,int value)
 	memcpy(block+offset,valptr,4);
 }
 
+// Reads a double from (block + offset)
+int readDouble(char* block,short offset)
+{
+	double value = 0;
+	double* valptr = &value;
+	memcpy(valptr,block+offset,sizeof(double));
+	return value;
+}
+
+// Writes a double at (block+offset)
+void writeDouble(char* block,short offset,double value)
+{
+	double *valptr = &value;
+	memcpy(block+offset,valptr,sizeof(double));
+}
+
 // Reads val<length> bytes in a block of memory starting at (block+offset)
 // and return the address of that block
 char* readBytes(char* block,short offset,int length)
@@ -46,7 +62,7 @@ char* readBytes(char* block,short offset,int length)
 }
 
 // Writes length bytes of data_block starting at (block+offset)
-void writeBytes(char* block,short offset,int length,int data_block)
+void writeBytes(char* block,short offset,int length,const char* data_block)
 {
 	memcpy(block+offset,data_block,length);
 }

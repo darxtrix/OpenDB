@@ -5,7 +5,7 @@
 #include "../globals.h"
 
 
-int loadCatalog(char* file_name,string rel,vector<string>& names,vector<string>& types)
+int loadCatalog(const char* file_name,string rel,vector<string>& names,vector<string>& types)
 {
 	ifstream infile(file_name); // input file stream
 	string test1,test2,test,att_name,att_type;

@@ -39,35 +39,35 @@ private:
 	Page(char* block);
 
 	// returns the bit representation of the record at the specified slot
-	static char* getRecord(short slotNum);
+	char* getRecord(short slotNum);
 
 	// insert a record into the page if a free slot is found
-	static int insertRecord(Record* rec);
+	int insertRecord(Record* rec);
 
 	// deletes a record pointed by the slot
-	static int deleteRecordBySlot(short slotNum);
+	int deleteRecordBySlot(short slotNum);
 
 	// deletes a record by finding it
-	static int deleteRecord(Record* rec);
+	int deleteRecord(Record* rec);
 
 	// write the binary information of the page to the bits array
 	// bits must be of PAGE_SIZE
-	static void toBinary(char* bits);
+	void toBinary(char* bits);
 
 	// read the page from the bits array 
-	static int fromBinary(char* bits);
+	int fromBinary(char* bits);
 
 	// get the number of records
-	static int getNumRecs();
+	int getNumRecs();
 
 	// returns the blockId of next page
-	static int getNextPage();
+	int getNextPage();
 
 	// returns the blockId of prev page
-	static int getPrevPage();
+	int getPrevPage();
 
 	// empty the page
-	static void emptyIt();
+	void emptyIt();
 
 	/* Destructor */
 	~Page();
