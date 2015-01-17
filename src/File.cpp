@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "file.h"
 #include "globals.h"
+#include "utils/page_utils.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ void File::createDb(char* fName)
 	}
 }
 
-void File::openDb(int length,char* fName)
+void File::openDb(off_t blockId,char* fName)
 {
 	int mode = O_RDWR;
 	// this is assumed that the file exists
@@ -46,51 +47,54 @@ void File::openDb(int length,char* fName)
 		#ifdef verbose
 			cout << fName << " has been opened." << endl;
 		#endif
-	}
-	// the file has been opened, seek forward 
-	// fileLen = 0, means the header page. File should be point to the first page
-
-	if ( fileLen != 0 ) // point to this page
-	{
+		// update the currLength variable
 		lseek(this.myfileDes,0,SEEK_SET);
 		// read the first(off_t) bytes of first page to get the length of the file
-		read(this.myfileDes,sizeof(off_t),&this.currLength);
-	}
-	else
-	{
-		this.currLength = 0; // we need to add Pages
-	}
+		read(this.myfileDes,&this.currLength,sizeof(off_t));
 
+		if ( blockId >= 0 ) // point to this block
+		{
+			lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
+		}
+		else
+		{
+			#ifdef verbose
+				cout << "Negative blockId is encounterd,blockId :" << blockId << endl;
+			#endif
+		}
+	}
 }
 
 
-int File::addPage(Page* addMe,off_t page_off)
-// This method will add the Page  addMe at a given page_off from the start and increment 
-// the currLength variable accordingly
+int File::addPage(Page* addMe,off_t blockId )
+// blockId -> 0 1 2 .. (currLength-1)
 {
-	// page_off is defined from the start of the file
-
-	if ( page_off > this.currLength ) // means there will be empty pages 
+	if ( blockId > this.currLength ) // means there will be empty pages 
 	{
-		// zeroing of pages till the offset of page_off
-		int dummy = (page_off-this.currentLength)*BLOCK_SIZE;
+		// zeroing of pages till the offset of blockId has to be done
+		// need to add these extra pages to the free list of pages
+
+		int dummy = (blockId-this.currLength)*BLOCK_SIZE;
 		char buff[dummy] = {0};
 
-		lseek(this.myfileDes,this.currentLength*BLOCK_SIZE,SEEK_SET);
+		lseek(this.myfileDes,this.currLength*BLOCK_SIZE,SEEK_SET);
 		write(this.myfileDes,buff,dummy);
 
-		// incementing the currentLength
-		this.currentLength = page_off + 1;
+		// updating the length
+		this.currLength = blockId+1;
 	}
+	
 	// now, add the page
-
 	char* bits = new char[BLOCK_SIZE];
 	addMe->toBinary(bits+8); // will copy page contents
 
+	// ?? but who will write the linked list headers of the page block
+
 	// pointing the fileDescriptor to correct position
-	lseek(this.myfileDes,page_off*BLOCK_SIZE,SEEK_SET);
+	lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
 	// writing the record
 	write(this.myfileDes,bits,BLOCK_SIZE);
+
 	delete[] bits;
 
 #ifdef VERBOSE
@@ -100,11 +104,11 @@ int File::addPage(Page* addMe,off_t page_off)
 	return DONE;
 }
 
-int File::getPage(Page* getMe,off_t page_off)
+int File::getPage(Page* getMe,off_t blockId)
 {
-	if ( page_off > this.currentLength )
+	if ( blockId >= this.currLength )
 	{
-		cerr << "whichPage:" << whichPage << " " << "currentLength: " << this.currentLength << endl;
+		cerr << "whichPage:" << whichPage << " " << "currentLength: " << this.currLength << endl;
 		cerr << "Tried accessing out of the file" << endl;
 		exit(1);
 	}
@@ -112,26 +116,30 @@ int File::getPage(Page* getMe,off_t page_off)
 	{
 		char* bits = new char[BLOCK_SIZE];
 		// moving the pointer
-		lseek(this.myfileDes,whichPage*BLOCK_SIZE,SEEK_SET);
+		lseek(this.myfileDes,blockId*BLOCK_SIZE,SEEK_SET);
 		read(this.myfileDes,bits,BLOCK_SIZE);
 
 		getMe->fromBinary(bits+4);
-		// update the pre and next headers ??
+		// update the pre and next headers of the getMe page ??
 
 		delete[] bits;
-
 	}
 
+}
+
+off_t File::getLength()
+{
+	return this.currLength;
 }
 
 off_t File::close()
 {
 	lseek(this.myfileDes,0,SEEK_SET);
-	write(this.myfileDes,&this.fileLen,sizeof(off_t));
+	write(this.myfileDes,&this.currLength,sizeof(off_t)); // updating header page
 	close(this.myfileDes);
 	#ifdef VERBOSE
 		cerr << "Closing the file." << endl;
 	#endif
 		
-	return this.fileLen;
+	return this.currLength;
 }

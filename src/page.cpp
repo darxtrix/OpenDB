@@ -154,38 +154,38 @@ int Page::deleteRecord(Record* rec)
 	}	
 }
 
-void toBinary(char* bits);
+void Page::toBinary(char* bits);
 {
 	writeBytes(bits,this.block,PAGE_SIZE);
 }
 
-void fromBinary(char* bits)
+void Page::fromBinary(char* bits)
 {
 	// does not do any checking of length of bits array
 	writeBytes(this.block,bits,PAGE_SIZE);
 }
 
-int getNumRecs()
+int Page::getNumRecs()
 {
 	return this.num_recs;
 }
 
-int getNextPage()
+int Page::getNextPage()
 {
 	return this.next;
 }
 
-int getPrevPage()
+int Page::getPrevPage()
 {
 	return this.pre;
 }
 
-int emptyIt()
+int Page::emptyIt()
 {
 	memset(this.block,0,PAGE_SIZE);
 }
 
-~Page()
+Page::~Page()
 {
 	delete this;
 }

@@ -2,11 +2,13 @@
 #define PAGE_H
 #include "record.h"
 
-/*
-	Abstraction of a slotted page block.
-	Manages adding, deletion and searching of records in the page itself.
-	Keeps a <undecided> list of records in a page.
-*/
+/**
+->  Abstraction of a slotted page block.
+->  Manages adding, deletion and searching of records in the page itself.
+->  blockId of the page will tell about the position of the block in memory.
+->  Pages will not be reshuffled within the file i.e their block Id's will remain same.
+->  Keeps a <undecided> list of records in a page.
+**/
 	
 struct Slot 
 {

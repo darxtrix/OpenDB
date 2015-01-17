@@ -17,7 +17,7 @@ using namespace std;
 -> N(number of attributes) slots of size sizeof(short) with each containing offset
    of the start of each attribute.
 -> Using this scheme we do not need to scan the whole record for finding a particular
-   attribute..
+   attribute.
 -> Last slot will point to the end of the record.
 -> ith value of the slot array will point to the ith attribute
 **/
@@ -35,7 +35,7 @@ private:
 	Record();
 
 	// Pass the relation to parse the catalog for that relation
-	// Record bits are constructed in the order of fiels in catalog file
+	// Record bits are constructed in the order of fields in catalog file
 	static int makeRecord(string rel,vector< tuple<string,string> > myatts); 
 
 	// returns the value of a given field in the record
