@@ -16,9 +16,13 @@ void writeInt(char* block,short offset,int value);
 
 char* readBytes(char* block,short offset,int length);
 
-void writeBytes(char* block,short offset,int length,int data_block);
+void writeBytes(char* block,short offset,int length,const char* data_block);
 
 void moveBytes(char* block,short src_off,short dest_off,short chunk_length);
+
+int readDouble(char* block,short offset);
+
+void writeDouble(char* block,short offset,double value);
 
 #endif
 

@@ -32,25 +32,25 @@ class File
 	File();
 
 	// get the current length of the file in pages  
-	static off_t getLength();
+	off_t getLength();
 
 	// Opens the database file with the given fname and point the file descriptor to 
 	// the block pointed to this blockId
-	static void openDb(off_t blockId,char* fname);
+	void openDb(off_t blockId,char* fname);
 
 	// create the database file
 	// add the file descriptor information to the meta file or catalog
-	static void createDb(char* fname);
+	void createDb(char* fname);
 
 	// Adds the page to the db file with a given blockId
 	// Need to manage the free pages list in case blockId is greater than the currentLength
 	// deleting a page is simply replacing a page
-	static int addPage(Page* addMe,off_t blockId);
+	int addPage(Page* addMe,off_t blockId);
 
 	// Allows someone to get a page by using the blockId of the page
-	static int getPage(Page* getMe,off_t blockId);
+	int getPage(Page* getMe,off_t blockId);
 
 	// Closes the file and return current length
-	static off_t close();
+	off_t close();
 
 };

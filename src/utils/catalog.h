@@ -11,6 +11,6 @@ using namespace std;
    the column to the type of the column.
 **/
 
-int loadCatalog(char* file_name,string rel,vector<string>& names,vector<string>& types);
+int loadCatalog(const char* file_name,string rel,vector<string>& names,vector<string>& types);
 
 #endif /* End CATALOG_H */
