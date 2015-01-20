@@ -39,7 +39,7 @@ void File::openDb(off_t blockId,char* fName)
 	int this->myfileDes = open(fName,mode,S_IWUSR+S_IRUSR);
 	if ( this->myfileDes < 0 )
 	{
-		cerr << fName << " couldn't be opened." << endl;
+		cerr << fName << " couldn't be opened. It may not exist." << endl;
 		exit(0);
 	}
 	else
@@ -123,6 +123,7 @@ int File::getPage(Page* getMe,off_t blockId)
 		// update the pre and next headers of the getMe page ??
 
 		delete[] bits;
+		return DONE;
 	}
 
 }

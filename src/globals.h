@@ -3,10 +3,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <map>
-#include <string>
-#include <iostream>
-
 #define BLOCK_SIZE 4096*4
 #define LIST_HEADERS 8 // Storing pre and next pages blockId
 #define PAGE_SIZE (BLOCK_SIZE-LIST_HEADERS)

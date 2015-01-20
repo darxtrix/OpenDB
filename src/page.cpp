@@ -31,7 +31,7 @@ int Page::insertRecord(Record* rec)
 {
 	char* bits = rec->getBits(); // getting the bits representation of the underlying memory
 	short slotNum = this->num_recs;
-	short recLength = (short)length(bits);
+	short recLength = (short)strlen(bits);
 	short new_actual_freespace = this->actual_freespace-recLength;
 
 	if ( new_actual_freespace >= 0 ) // the record can be inserted
@@ -124,7 +124,7 @@ int Page::deleteRecordBySlot(short slotNum)
 int Page::deleteRecord(Record* rec)
 {
 	char* bits = rec->getBits();
-	short length = length(bits);
+	short length = strlen(bits);
 	bool flag = false;
 
 	for ( int ctr = 0 ; ctr < this->num_recs ; ctr++)
