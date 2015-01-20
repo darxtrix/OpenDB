@@ -1,9 +1,11 @@
 #ifndef DISKMANAGER_H
 #define DISKMANAGER_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <sys/types.h>
 #include "file.h"
 #include "page.h"
 
@@ -27,19 +29,19 @@ class DM
 {	
 public:
 	// Maps a database to its file object
-	unordered_map<string,File> dbMap;
+	unordered_map<string,File*> dbMap;
 	// list of open databases
 	vector <string> openList;
 
 	// gets file object by taking a database name
-	static File getFObj(string dbName);
+	static File* getFObj(string dbName);
 
 	// creates a database of the given name and the corresponding file
 	// it does not open the database 
 	static int createDB(string dbName);
 
 	// open the database and if the database is already open doesn't do anything
-	static int openDB(string dbName);
+	static int openDB(string dbName,off_t blockId);
 
 	// reads a page into getMe at a given blockId from the start of the file
 	static int readDB(string dbName,Page* getMe,short blockId);
@@ -51,6 +53,7 @@ public:
 	static int closeDB(string dbName);
 
 	// calculates the size of the database
+	// ?? read from the header page
 	static int sizeDB(string dbName);
  
 
